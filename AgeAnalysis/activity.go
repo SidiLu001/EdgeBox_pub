@@ -38,7 +38,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		return true, err
 	}
 //recognition done here, dummy now
-//add by Yongtao
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
 
 
