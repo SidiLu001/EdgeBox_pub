@@ -88,15 +88,16 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	if preds, ok := result[0].Value().([][]float32); ok {
-		fmt.Println(preds[0])
-		fmt.Println(reflect.TypeOf(preds[0]))
+		// fmt.Println(preds[0])
+		// fmt.Println(reflect.TypeOf(preds[0]))
 		maxValueIndex = indexOfMax(preds[0])
 		age = ageStage[maxValueIndex]
+		fmt.Println("Age: %s", age)
 	}
 	// *******************************
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
-	ctx.Logger().Debugf("Age: %s", age)
+	// ctx.Logger().Debugf("Age: %s", age)
 
 
 	return true, nil
