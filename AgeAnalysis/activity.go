@@ -96,6 +96,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 	}
 	// *******************************
+	fmt.Printf("Input serial: %s\n", input.Serial)
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
 // 	ctx.Logger().Debugf("Age: %s", age)

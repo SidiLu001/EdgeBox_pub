@@ -48,7 +48,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	
 
-	output := &Output{Serial: "1"}//should be serial of the record in the database
+	output := &Output{Serial: "imgPath"}//should be serial of the record in the database
 	err = ctx.SetOutputObject(output)
 	if err != nil {
 		return true, err
