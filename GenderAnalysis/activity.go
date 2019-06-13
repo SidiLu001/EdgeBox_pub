@@ -88,9 +88,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		// fmt.Println(preds)
 		if preds[0][0] > preds[0][1] {
 			gender = "female"
-			fmt.Println("female")
+			// fmt.Println("female")
 		} else {
-			fmt.Println("male")
+			// fmt.Println("male")
 			gender = "male"
 		}
 		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 34, gender, 0x1B)
