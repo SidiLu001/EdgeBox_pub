@@ -92,7 +92,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 // 		fmt.Println(reflect.TypeOf(preds[0]))
 		maxValueIndex = indexOfMax(preds[0])
 		age = ageStage[maxValueIndex]
-		fmt.Println("Age: ", age)
+		// fmt.Println("Age: ", age)
+		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 	}
 	// *******************************
 
