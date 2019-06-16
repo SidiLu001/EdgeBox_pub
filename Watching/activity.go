@@ -40,7 +40,7 @@ func (a *Activity) Metadata() *activity.Metadata {
 func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	//call neural network here
-        ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
+    ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
 	err = nil //set if neural network go wrong
 	if err != nil {
 		return true, err
