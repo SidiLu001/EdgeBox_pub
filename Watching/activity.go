@@ -18,7 +18,7 @@ const dataDir = "testdata"
 
 var frameIndex int = 0
 var window *gocv.Window
-var img, imgCopy gocv.Mat
+var img gocv.Mat
 var rec *face.Recognizer
 var webcam *gocv.VideoCapture
 var boxcolor color.RGBA
@@ -53,8 +53,6 @@ func init() {
 	}
 	defer webcam.Close()
 
-	imgCopy := gocv.NewMat()
-	defer imgCopy.Close()
 
 	boxcolor = color.RGBA{0, 255, 0, 0}
 }
@@ -103,7 +101,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		return
 	}
 
-	img.CopyTo(&imgCopy)
 
 	testImagePristin := "tmp.jpg"
 	gocv.IMWrite(testImagePristin, img)
