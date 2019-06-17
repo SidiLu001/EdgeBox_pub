@@ -52,7 +52,8 @@ func init() {
 		fmt.Printf("Error opening video capture device: %v\n", deviceID)
 		return
 	}
-	defer webcam.Close()
+	
+	// defer webcam.Close()
 
 
 	// boxcolor = color.RGBA{0, 255, 0, 0}
