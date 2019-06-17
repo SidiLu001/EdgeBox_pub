@@ -58,7 +58,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 //recognition done here, dummy now
 	// *************************
-	imgName := "tmpAge.jpg"
+	// imgName := "tmpAge.jpg"
+	imgName := input.Serial
 	imageFile, err := os.Open(imgName)
 	if err != nil {
 		log.Fatal(err)
@@ -97,6 +98,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	// *******************************
+	fmt.Printf("Input serial: %s\n", input.Serial)
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
 
