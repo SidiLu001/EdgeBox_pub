@@ -22,7 +22,7 @@ var rec *face.Recognizer
 // var webcam *gocv.VideoCapture
 // var boxcolor color.RGBA
 // var frameIndex int
-var deviceID string
+// var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
 
