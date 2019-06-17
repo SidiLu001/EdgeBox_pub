@@ -7,22 +7,22 @@ import (
 	"fmt"
 	// "image/color"
 	// "image"
-	"log"
+	// "log"
 	// "strconv"
 
-	"github.com/Kagami/go-face"
-	// "gocv.io/x/gocv"
+	// "github.com/Kagami/go-face"
+	"gocv.io/x/gocv"
 )
 
-const dataDir = "testdata"
+// const dataDir = "testdata"
 
-var rec *face.Recognizer
-// var window *gocv.Window
-// var img gocv.Mat
-// var webcam *gocv.VideoCapture
+// var rec *face.Recognizer
+var window *gocv.Window
+var img gocv.Mat
+var webcam *gocv.VideoCapture
 // var boxcolor color.RGBA
-// var frameIndex int
-// var deviceID string
+var frameIndex int
+var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
 var err error
@@ -32,29 +32,27 @@ func init() {
 	// window = gocv.NewWindow("Flogo")
 	// defer window.Close()
 	// frameIndex = 0
-	// img = gocv.NewMat()
-	// defer img.Close()
-	// Init the recognizer.
-	
-	rec, err = face.NewRecognizer(dataDir)
-	if err != nil {
-		log.Fatalf("Can't init face recognizer: %v", err)
-	}
-	// Free the resources when you're finished.
-	defer rec.Close()
+	img = gocv.NewMat()
+	defer img.Close()
 
-	// Test image with 10 faces.
-	// testImagePristin := filepath.Join(dataDir, "pristin.jpg")
+	// // Init the recognizer.	
+	// rec, err = face.NewRecognizer(dataDir)
+	// if err != nil {
+	// 	log.Fatalf("Can't init face recognizer: %v", err)
+	// }
+	// // Free the resources when you're finished.
+	// defer rec.Close()
+
 
 	//*****************************************
-	// deviceID = "the_car_lab.mp4"
+	deviceID = "the_car_lab.mp4"
 	// open capture device
-	// webcam, err = gocv.OpenVideoCapture(deviceID)
-	// if err != nil {
-	// 	fmt.Printf("Error opening video capture device: %v\n", deviceID)
-	// 	return
-	// }
-	// defer webcam.Close()
+	webcam, err = gocv.OpenVideoCapture(deviceID)
+	if err != nil {
+		fmt.Printf("Error opening video capture device: %v\n", deviceID)
+		return
+	}
+	defer webcam.Close()
 
 
 	// boxcolor = color.RGBA{0, 255, 0, 0}
@@ -109,33 +107,33 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// gocv.IMWrite(testImagePristin, img)
 
 	// Recognize faces on that image.
-	faces, err := rec.RecognizeFile(testImagePristin)
-	if err != nil {
-		log.Fatalf("Can't recognize: %v", err)
-	}
+	// faces, err := rec.RecognizeFile(testImagePristin)
+	// if err != nil {
+	// 	log.Fatalf("Can't recognize: %v", err)
+	// }
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
 	
 	// save := false
 	// if save is true, indicating that the face is detected
 	
-	for _, f := range faces {
-		// fmt.Println(f.Rectangle)
-		mRect := f.Rectangle
-		mRect.Min.X -= 20
-		mRect.Min.Y -= 60
-		mRect.Max.X += 20
-		mRect.Max.Y += 20
-		fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
-		// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
-		// // save = true
-		// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
-		// imgFace := img.Region(rect)
+	// for _, f := range faces {
+	// 	// fmt.Println(f.Rectangle)
+	// 	mRect := f.Rectangle
+	// 	mRect.Min.X -= 20
+	// 	mRect.Min.Y -= 60
+	// 	mRect.Max.X += 20
+	// 	mRect.Max.Y += 20
+	// 	fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+	// 	// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
+	// 	// // save = true
+	// 	// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+	// 	// imgFace := img.Region(rect)
 
-	// 	frameIndex++
-	// 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-	// 	gocv.IMWrite(filename, imgFace)
-	}
+	// // 	frameIndex++
+	// // 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	// // 	gocv.IMWrite(filename, imgFace)
+	// }
 	// *************************
 	
 	// window.IMShow(img)

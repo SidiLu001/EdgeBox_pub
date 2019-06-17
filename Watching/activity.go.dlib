@@ -5,7 +5,7 @@ import (
 //	"github.com/project-flogo/core/data/metadata"
 
 	"fmt"
-	"image/color"
+	// "image/color"
 	// "image"
 	"log"
 	// "strconv"
@@ -16,24 +16,26 @@ import (
 
 const dataDir = "testdata"
 
-// var frameIndex int
+var rec *face.Recognizer
 // var window *gocv.Window
 // var img gocv.Mat
-var rec *face.Recognizer
 // var webcam *gocv.VideoCapture
-var boxcolor color.RGBA
-var deviceID, filename string
+// var boxcolor color.RGBA
+// var frameIndex int
+// var deviceID string
+var filename string
+var activityMd = activity.ToMetadata(&Output{})
+var err error
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	// window = gocv.NewWindow("Flogo")
 	// defer window.Close()
 	// frameIndex = 0
-
 	// img = gocv.NewMat()
 	// defer img.Close()
 	// Init the recognizer.
-	var err error
+	
 	rec, err = face.NewRecognizer(dataDir)
 	if err != nil {
 		log.Fatalf("Can't init face recognizer: %v", err)
@@ -55,10 +57,10 @@ func init() {
 	// defer webcam.Close()
 
 
-	boxcolor = color.RGBA{0, 255, 0, 0}
+	// boxcolor = color.RGBA{0, 255, 0, 0}
 }
 
-var activityMd = activity.ToMetadata(&Output{})
+
 
 //New optional factory method, should be used if one activity instance per configuration is desired
 func New(ctx activity.InitContext) (activity.Activity, error) {
@@ -103,10 +105,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// }
 
 
-	// testImagePristin := "tmp.jpg"
+	testImagePristin := "tmp.jpg"
 	// gocv.IMWrite(testImagePristin, img)
 
-	testImagePristin := "tmpAge.jpg"
 	// Recognize faces on that image.
 	faces, err := rec.RecognizeFile(testImagePristin)
 	if err != nil {
@@ -115,7 +116,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
 	
-	save := false
+	// save := false
 	// if save is true, indicating that the face is detected
 	
 	for _, f := range faces {
@@ -127,23 +128,26 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		mRect.Max.Y += 20
 		fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
 		// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
-		save = true
+		// // save = true
 		// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
 		// imgFace := img.Region(rect)
 
-		// frameIndex++
-		// filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-		
-		// gocv.IMWrite(filename, imgFace)
+	// 	frameIndex++
+	// 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	// 	gocv.IMWrite(filename, imgFace)
 	}
 	// *************************
 	
 	// window.IMShow(img)
 	// window.WaitKey(1)
 
-	if !save {
-		return false, nil
-	}
+	// frameIndex++
+	// filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	// gocv.IMWrite(filename, img)
+
+	// if !save {
+	// 	return false, nil
+	// }
 	// ***********************
 	filename = testImagePristin
 	//todo:
