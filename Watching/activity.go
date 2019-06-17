@@ -97,10 +97,11 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	// *************************************
 	// add by Yongtao
-	// if ok := webcam.Read(&img); !ok {
-	// 	fmt.Printf("Device closed: %v\n", deviceID)
-	// 	return
-	// }
+	if ok := webcam.Read(&img); !ok {
+		fmt.Printf("Device closed: %v\n", deviceID)
+		return
+	}
+	fmt.Println(img.Size())
 
 
 	testImagePristin := "tmp.jpg"
