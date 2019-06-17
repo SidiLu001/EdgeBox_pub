@@ -25,6 +25,7 @@ var rec *face.Recognizer
 // var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
+var err error
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
@@ -34,7 +35,7 @@ func init() {
 	// img = gocv.NewMat()
 	// defer img.Close()
 	// Init the recognizer.
-	var err error
+	
 	rec, err = face.NewRecognizer(dataDir)
 	if err != nil {
 		log.Fatalf("Can't init face recognizer: %v", err)
