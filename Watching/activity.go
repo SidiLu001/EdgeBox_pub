@@ -5,59 +5,61 @@ import (
 //	"github.com/project-flogo/core/data/metadata"
 
 	"fmt"
-	"image/color"
+	// "image/color"
 	// "image"
-	// "log"
-	"strconv"
+	"log"
+	// "strconv"
 
-	// "github.com/Kagami/go-face"
-	"gocv.io/x/gocv"
+	"github.com/Kagami/go-face"
+	// "gocv.io/x/gocv"
 )
 
 const dataDir = "testdata"
 
-var frameIndex int
+var rec *face.Recognizer
 // var window *gocv.Window
-var img gocv.Mat
-// var rec *face.Recognizer
-var webcam *gocv.VideoCapture
-var boxcolor color.RGBA
-var deviceID, filename string
+// var img gocv.Mat
+// var webcam *gocv.VideoCapture
+// var boxcolor color.RGBA
+// var frameIndex int
+var deviceID string
+var filename string
+var activityMd = activity.ToMetadata(&Output{})
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	// window = gocv.NewWindow("Flogo")
 	// defer window.Close()
-	frameIndex = 0
-	img = gocv.NewMat()
-	defer img.Close()
+	// frameIndex = 0
+	// img = gocv.NewMat()
+	// defer img.Close()
 	// Init the recognizer.
 	var err error
-	// rec, err = face.NewRecognizer(dataDir)
-	// if err != nil {
-	// 	log.Fatalf("Can't init face recognizer: %v", err)
-	// }
-	// // Free the resources when you're finished.
-	// defer rec.Close()
+	rec, err = face.NewRecognizer(dataDir)
+	if err != nil {
+		log.Fatalf("Can't init face recognizer: %v", err)
+	}
+	// Free the resources when you're finished.
+	defer rec.Close()
 
 	// Test image with 10 faces.
 	// testImagePristin := filepath.Join(dataDir, "pristin.jpg")
 
 	//*****************************************
-	deviceID = "the_car_lab.mp4"
+	// deviceID = "the_car_lab.mp4"
 	// open capture device
-	webcam, err = gocv.OpenVideoCapture(deviceID)
-	if err != nil {
-		fmt.Printf("Error opening video capture device: %v\n", deviceID)
-		return
-	}
-	defer webcam.Close()
+	// webcam, err = gocv.OpenVideoCapture(deviceID)
+	// if err != nil {
+	// 	fmt.Printf("Error opening video capture device: %v\n", deviceID)
+	// 	return
+	// }
+	// defer webcam.Close()
 
 
-	boxcolor = color.RGBA{0, 255, 0, 0}
+	// boxcolor = color.RGBA{0, 255, 0, 0}
 }
 
-var activityMd = activity.ToMetadata(&Output{})
+
 
 //New optional factory method, should be used if one activity instance per configuration is desired
 func New(ctx activity.InitContext) (activity.Activity, error) {
@@ -96,55 +98,57 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	// *************************************
 	// add by Yongtao
-	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("Device closed: %v\n", deviceID)
-		return
-	}
+	// if ok := webcam.Read(&img); !ok {
+	// 	fmt.Printf("Device closed: %v\n", deviceID)
+	// 	return
+	// }
 
 
-	// testImagePristin := "tmp.jpg"
+	testImagePristin := "tmp.jpg"
 	// gocv.IMWrite(testImagePristin, img)
 
 	// Recognize faces on that image.
-	// faces, err := rec.RecognizeFile(testImagePristin)
-	// if err != nil {
-	// 	log.Fatalf("Can't recognize: %v", err)
-	// }
+	faces, err := rec.RecognizeFile(testImagePristin)
+	if err != nil {
+		log.Fatalf("Can't recognize: %v", err)
+	}
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
 	
 	// save := false
 	// if save is true, indicating that the face is detected
 	
-	// for _, f := range faces {
-	// 	// fmt.Println(f.Rectangle)
-	// 	mRect := f.Rectangle
-	// 	mRect.Min.X -= 20
-	// 	mRect.Min.Y -= 60
-	// 	mRect.Max.X += 20
-	// 	mRect.Max.Y += 20
-	// 	gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
-	// 	// save = true
-	// 	rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
-	// 	imgFace := img.Region(rect)
+	for _, f := range faces {
+		// fmt.Println(f.Rectangle)
+		mRect := f.Rectangle
+		mRect.Min.X -= 20
+		mRect.Min.Y -= 60
+		mRect.Max.X += 20
+		mRect.Max.Y += 20
+		fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+		// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
+		// // save = true
+		// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+		// imgFace := img.Region(rect)
 
 	// 	frameIndex++
 	// 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
 	// 	gocv.IMWrite(filename, imgFace)
-	// }
+	}
 	// *************************
 	
 	// window.IMShow(img)
 	// window.WaitKey(1)
 
-	frameIndex++
-	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-	gocv.IMWrite(filename, img)
+	// frameIndex++
+	// filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	// gocv.IMWrite(filename, img)
 
 	// if !save {
 	// 	return false, nil
 	// }
 	// ***********************
+	filename = testImagePristin
 	//todo:
 	// A frame of pictures may contain multiple faces, which will be stored as multiple files. 
 	// These file paths should be merged and transmitted in strings. 
