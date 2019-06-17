@@ -26,8 +26,8 @@ var deviceID, filename string
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
-	// window = gocv.NewWindow("Flogo")
-	// defer window.Close()
+	window = gocv.NewWindow("Flogo")
+	defer window.Close()
 	frameIndex = 0
 	img = gocv.NewMat()
 	defer img.Close()
