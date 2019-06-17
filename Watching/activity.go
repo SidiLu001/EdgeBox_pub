@@ -16,8 +16,8 @@ import (
 
 const dataDir = "testdata"
 
-var frameIndex int = 0
-var window *gocv.Window
+var frameIndex int
+// var window *gocv.Window
 var img gocv.Mat
 var rec *face.Recognizer
 var webcam *gocv.VideoCapture
@@ -26,8 +26,9 @@ var deviceID, filename string
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
-	window = gocv.NewWindow("Flogo")
-	defer window.Close()
+	// window = gocv.NewWindow("Flogo")
+	// defer window.Close()
+	frameIndex = 0
 
 	img = gocv.NewMat()
 	defer img.Close()
@@ -134,8 +135,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 	// *************************
 	
-	window.IMShow(img)
-	window.WaitKey(1)
+	// window.IMShow(img)
+	// window.WaitKey(1)
 
 	if !save {
 		return false, nil
