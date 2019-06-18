@@ -33,8 +33,8 @@ func init() {
 	// window = gocv.NewWindow("Flogo")
 	// defer window.Close()
 	// frameIndex = 0
-	img = gocv.NewMat()
-	defer img.Close()
+	// img = gocv.NewMat()
+	// defer img.Close()
 
 	// // Init the recognizer.	
 	// rec, err = face.NewRecognizer(dataDir)
@@ -89,6 +89,8 @@ func (a *Activity) Metadata() *activity.Metadata {
 
 // Eval implements api.Activity.Eval - Logs the Message
 func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
+	img = gocv.NewMat()
+	defer img.Close()
 
 	deviceID = "the_car_lab.mp4"
 		// open capture device
