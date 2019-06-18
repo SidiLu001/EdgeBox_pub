@@ -10,13 +10,13 @@ import (
 	// "log"
 	"strconv"
 
-	"github.com/Kagami/go-face"
+	// "github.com/Kagami/go-face"
 	"gocv.io/x/gocv"
 )
 
 // const dataDir = "testdata"
 
-var rec, _ = face.NewRecognizer("testdata")
+// var rec, _ = face.NewRecognizer("testdata")
 var window = gocv.NewWindow("Flogo")
 var img gocv.Mat
 var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
@@ -26,7 +26,6 @@ var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
 var err error
-var ifInit = true
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
