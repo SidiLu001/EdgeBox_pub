@@ -35,6 +35,7 @@ func init() {
 	// frameIndex = 0
 	// img = gocv.NewMat()
 	// defer img.Close()
+	
 
 	// // Init the recognizer.	
 	// rec, err = face.NewRecognizer(dataDir)
