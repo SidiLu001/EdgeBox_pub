@@ -10,13 +10,13 @@ import (
 	// "log"
 	"strconv"
 
-	// "github.com/Kagami/go-face"
+	"github.com/Kagami/go-face"
 	"gocv.io/x/gocv"
 )
 
 // const dataDir = "testdata"
 
-// var rec *face.Recognizer
+var rec, _ = face.NewRecognizer("testdata")
 var window = gocv.NewWindow("Flogo")
 var img gocv.Mat
 var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
@@ -35,7 +35,7 @@ func init() {
 	// frameIndex = 0
 	// img = gocv.NewMat()
 	// defer img.Close()
-	
+
 
 	// // Init the recognizer.	
 	// rec, err = face.NewRecognizer(dataDir)
