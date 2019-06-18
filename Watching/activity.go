@@ -19,7 +19,7 @@ import (
 // var rec *face.Recognizer
 var window = gocv.NewWindow("Flogo")
 var img gocv.Mat
-var webcam *gocv.VideoCapture
+var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
 // var boxcolor color.RGBA
 var frameIndex int
 var deviceID string
@@ -94,12 +94,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	deviceID = "the_car_lab.mp4"
 		// open capture device
-	webcam, err = gocv.OpenVideoCapture(deviceID)
-	if err != nil {
-		fmt.Printf("Error opening video capture device: %v\n", deviceID)
-		return
-	}
-	defer webcam.Close()
+	// webcam, err = gocv.OpenVideoCapture(deviceID)
+	// if err != nil {
+	// 	fmt.Printf("Error opening video capture device: %v\n", deviceID)
+	// 	return
+	// }
+	// defer webcam.Close()
 
 	//call neural network here
     ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
