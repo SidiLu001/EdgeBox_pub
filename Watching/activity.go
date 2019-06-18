@@ -151,7 +151,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// *************************
 	
 	window.IMShow(img)
-	window.WaitKey(100)
+	window.WaitKey(1)
 
 	// frameIndex++
 	// filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
