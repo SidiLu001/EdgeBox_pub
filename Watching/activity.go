@@ -8,7 +8,7 @@ import (
 	// "image/color"
 	// "image"
 	// "log"
-	// "strconv"
+	"strconv"
 
 	// "github.com/Kagami/go-face"
 	"gocv.io/x/gocv"
@@ -21,7 +21,7 @@ var window = gocv.NewWindow("Flogo")
 var img gocv.Mat
 var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
 // var boxcolor color.RGBA
-var frameIndex int
+var frameIndex = 0
 var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
@@ -92,7 +92,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	img = gocv.NewMat()
 	defer img.Close()
 
-	deviceID = "the_car_lab.mp4"
+	// deviceID = "the_car_lab.mp4"
 		// open capture device
 	// webcam, err = gocv.OpenVideoCapture(deviceID)
 	// if err != nil {
@@ -117,7 +117,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	fmt.Println(img.Size())
 
 
-	testImagePristin := "tmp.jpg"
+	// testImagePristin := "tmp.jpg"
 	// gocv.IMWrite(testImagePristin, img)
 
 	// Recognize faces on that image.
@@ -153,15 +153,15 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	window.IMShow(img)
 	window.WaitKey(1)
 
-	// frameIndex++
-	// filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-	// gocv.IMWrite(filename, img)
+	frameIndex++
+	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	gocv.IMWrite(filename, img)
 
 	// if !save {
 	// 	return false, nil
 	// }
 	// ***********************
-	filename = testImagePristin
+	// filename = testImagePristin
 	//todo:
 	// A frame of pictures may contain multiple faces, which will be stored as multiple files. 
 	// These file paths should be merged and transmitted in strings. 
