@@ -90,17 +90,14 @@ func (a *Activity) Metadata() *activity.Metadata {
 // Eval implements api.Activity.Eval - Logs the Message
 func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
-	if ifInit {
-		deviceID = "the_car_lab.mp4"
+	deviceID = "the_car_lab.mp4"
 		// open capture device
-		webcam, err = gocv.OpenVideoCapture(deviceID)
-		if err != nil {
-			fmt.Printf("Error opening video capture device: %v\n", deviceID)
-			return
-		}
-		ifInit = false
-
+	webcam, err = gocv.OpenVideoCapture(deviceID)
+	if err != nil {
+		fmt.Printf("Error opening video capture device: %v\n", deviceID)
+		return
 	}
+	defer webcam.Close()
 
 	//call neural network here
     ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
