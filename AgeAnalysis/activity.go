@@ -81,6 +81,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		rectString = strings.Replace(rectString, ")", "", -1)
 		rectString = strings.Replace(rectString, "-", ",", -1)
 		rectArr := strings.Split(receiveString, ",")
+		fmt.Println("***************************************************")
 		fmt.Println(rectArr)
 
 	}
