@@ -2,22 +2,22 @@ package sample
 
 import (
 	"github.com/project-flogo/core/activity"
-//	"github.com/project-flogo/core/data/metadata"
+	//	"github.com/project-flogo/core/data/metadata"
 
 	"bytes"
 	"fmt"
 	"io"
 	"log"
 	"os"
+
 	// 	"reflect"
 
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
 )
 
-
 var model *tf.SavedModel
-var activityMd = activity.ToMetadata( &Input{})
+var activityMd = activity.ToMetadata(&Input{})
 var gender string
 
 func init() {
@@ -29,10 +29,8 @@ func init() {
 	}
 }
 
-
 //New optional factory method, should be used if one activity instance per configuration is desired
 func New(ctx activity.InitContext) (activity.Activity, error) {
-
 
 	act := &Activity{} //add aSetting to instance
 
@@ -56,7 +54,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	if err != nil {
 		return true, err
 	}
-//recognition done here, dummy now
+	//recognition done here, dummy now
 	// *************************
 	// imgName := "tmpAge.jpg"
 	imgName := input.Serial
@@ -98,14 +96,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	// *******************************
-	fmt.Printf("Input serial: %s\n", input.Serial)
+	fmt.Printf("\n %c[%d;%d;%dmInput serial: %s%c[0m\n", 0x1B, 0, 0, 31, input.Serial, 0x1B)
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
 
-
 	return true, nil
 }
-
 
 // add by Yongtao
 func checkErr(err error) {
@@ -114,11 +110,10 @@ func checkErr(err error) {
 	}
 }
 
-
 // determine if the file/folder of the given path exists
 func exists(path string) bool {
-	
-	_, err := os.Stat(path) 
+
+	_, err := os.Stat(path)
 	//os.Stat get the file information
 	if err != nil {
 		if os.IsExist(err) {
@@ -209,4 +204,3 @@ func indexOfMax(arr []float32) int {
 
 	return maxIndex
 }
-

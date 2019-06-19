@@ -8,20 +8,21 @@ import (
 	"io"
 	"log"
 	"os"
-// 	"reflect"
+
+	// 	"reflect"
 
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
 )
 
 var model *tf.SavedModel
-var activityMd = activity.ToMetadata( &Input{})
+var activityMd = activity.ToMetadata(&Input{})
 var ageStage [5]string
 var maxValueIndex int
 var age string
 
 func init() {
-	_ = activity.Register(&Activity{}) 
+	_ = activity.Register(&Activity{})
 	//activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	// add by Yongtao
 	ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
@@ -34,7 +35,6 @@ func init() {
 
 //New optional factory method, should be used if one activity instance per configuration is desired
 func New(ctx activity.InitContext) (activity.Activity, error) {
-
 
 	act := &Activity{} //add aSetting to instance
 
@@ -89,19 +89,19 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	if preds, ok := result[0].Value().([][]float32); ok {
-// 		fmt.Println(preds[0])
-// 		fmt.Println(reflect.TypeOf(preds[0]))
+		// 		fmt.Println(preds[0])
+		// 		fmt.Println(reflect.TypeOf(preds[0]))
 		maxValueIndex = indexOfMax(preds[0])
 		age = ageStage[maxValueIndex]
 		// fmt.Println("Age: ", age)
 		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 	}
 	// *******************************
-	fmt.Printf("Input serial: %s\n", input.Serial)
+	// fmt.Printf("Input serial: %s\n", input.Serial)
+	fmt.Printf("\n %c[%d;%d;%dmInput serial: %s%c[0m\n", 0x1B, 0, 0, 31, input.Serial, 0x1B)
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
-// 	ctx.Logger().Debugf("Age: %s", age)
-
+	// 	ctx.Logger().Debugf("Age: %s", age)
 
 	return true, nil
 }
@@ -113,11 +113,10 @@ func checkErr(err error) {
 	}
 }
 
-
 // determine if the file/folder of the given path exists
 func exists(path string) bool {
-	
-	_, err := os.Stat(path) 
+
+	_, err := os.Stat(path)
 	//os.Stat get the file information
 	if err != nil {
 		if os.IsExist(err) {
