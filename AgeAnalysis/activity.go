@@ -13,6 +13,11 @@ import (
 
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
+
+	"image"
+	"image/color"
+
+	"gocv.io/x/gocv"
 )
 
 var model *tf.SavedModel
@@ -20,6 +25,9 @@ var activityMd = activity.ToMetadata(&Input{})
 var ageStage [5]string
 var maxValueIndex int
 var age string
+var window = gocv.NewWindow("Age")
+var textColor = color.RGBA{0, 255, 0, 0}
+var pt = image.Pt(20, 20)
 
 func init() {
 	_ = activity.Register(&Activity{})
@@ -95,6 +103,11 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		age = ageStage[maxValueIndex]
 		// fmt.Println("Age: ", age)
 		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
+
+		imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
+		gocv.PutText(&imgFace, age, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
+		window.IMShow(imgFace)
+		window.WaitKey(1)
 	}
 	// *******************************
 	// fmt.Printf("Input serial: %s\n", input.Serial)

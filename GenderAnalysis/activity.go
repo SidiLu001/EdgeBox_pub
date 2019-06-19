@@ -14,11 +14,19 @@ import (
 
 	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 	"github.com/tensorflow/tensorflow/tensorflow/go/op"
+
+	"image"
+	"image/color"
+
+	"gocv.io/x/gocv"
 )
 
 var model *tf.SavedModel
 var activityMd = activity.ToMetadata(&Input{})
 var gender string
+var window = gocv.NewWindow("Gender")
+var textColor = color.RGBA{0, 255, 0, 0}
+var pt = image.Pt(20, 20)
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
@@ -93,6 +101,10 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			gender = "male"
 		}
 		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 34, gender, 0x1B)
+		imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
+		gocv.PutText(&imgFace, gender, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
+		window.IMShow(imgFace)
+		window.WaitKey(1)
 	}
 
 	// *******************************
