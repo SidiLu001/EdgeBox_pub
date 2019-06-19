@@ -100,6 +100,10 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			if err != nil {
 				return true, err
 			}
+			left -= 20
+			top -= 60
+			right += 20
+			bottom += 20
 			if right > 1280 {
 				right = 1280
 			}
