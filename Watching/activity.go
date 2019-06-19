@@ -2,9 +2,11 @@ package sample
 
 import (
 	"github.com/project-flogo/core/activity"
-//	"github.com/project-flogo/core/data/metadata"
+	//	"github.com/project-flogo/core/data/metadata"
 
 	"fmt"
+	"os"
+
 	// "image/color"
 	// "image"
 	// "log"
@@ -20,12 +22,14 @@ import (
 var window = gocv.NewWindow("EdgeWare")
 var img gocv.Mat
 var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
+
 // var boxcolor color.RGBA
 var frameIndex = 0
 var deviceID string
 var filename string
 var activityMd = activity.ToMetadata(&Output{})
 var err error
+var imgDir = os.Getenv("HOME") + "/flogo"
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
@@ -35,15 +39,13 @@ func init() {
 	// img = gocv.NewMat()
 	// defer img.Close()
 
-
-	// // Init the recognizer.	
+	// // Init the recognizer.
 	// rec, err = face.NewRecognizer(dataDir)
 	// if err != nil {
 	// 	log.Fatalf("Can't init face recognizer: %v", err)
 	// }
 	// // Free the resources when you're finished.
 	// defer rec.Close()
-
 
 	//*****************************************
 	// deviceID = "the_car_lab.mp4"
@@ -53,25 +55,22 @@ func init() {
 	// 	fmt.Printf("Error opening video capture device: %v\n", deviceID)
 	// 	return
 	// }
-	
-	// defer webcam.Close()
 
+	// defer webcam.Close()
 
 	// boxcolor = color.RGBA{0, 255, 0, 0}
 }
 
-
-
 //New optional factory method, should be used if one activity instance per configuration is desired
 func New(ctx activity.InitContext) (activity.Activity, error) {
 
-//	s := &Settings{}
-//	err := metadata.MapToStruct(ctx.Settings(), s, true)
-//	if err != nil {
-//		return nil, err
-//	}
+	//	s := &Settings{}
+	//	err := metadata.MapToStruct(ctx.Settings(), s, true)
+	//	if err != nil {
+	//		return nil, err
+	//	}
 
-//	ctx.Logger().Debugf("Setting: %s", s.ASetting)
+	//	ctx.Logger().Debugf("Setting: %s", s.ASetting)
 
 	act := &Activity{} //add aSetting to instance//nothing to add now
 
@@ -93,7 +92,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	defer img.Close()
 
 	// deviceID = "the_car_lab.mp4"
-		// open capture device
+	// open capture device
 	// webcam, err = gocv.OpenVideoCapture(deviceID)
 	// if err != nil {
 	// 	fmt.Printf("Error opening video capture device: %v\n", deviceID)
@@ -102,8 +101,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// defer webcam.Close()
 
 	//call neural network here
-    ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
-	err = nil //set if neural network go wrong
+	ctx.Logger().Debugf("result of picking out a person: %s", "found") //log is also dummy here
+	err = nil                                                          //set if neural network go wrong
 	if err != nil {
 		return true, err
 	}
@@ -116,7 +115,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 	fmt.Println(img.Size())
 
-
 	// testImagePristin := "tmp.jpg"
 	// gocv.IMWrite(testImagePristin, img)
 
@@ -127,10 +125,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// }
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
-	
 	// save := false
 	// if save is true, indicating that the face is detected
-	
+
 	// for _, f := range faces {
 	// 	// fmt.Println(f.Rectangle)
 	// 	mRect := f.Rectangle
@@ -149,12 +146,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// // 	gocv.IMWrite(filename, imgFace)
 	// }
 	// *************************
-	
+
 	window.IMShow(img)
 	window.WaitKey(1)
 
 	frameIndex++
-	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
 	gocv.IMWrite(filename, img)
 
 	// if !save {
@@ -163,12 +160,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// ***********************
 	// filename = testImagePristin
 	//todo:
-	// A frame of pictures may contain multiple faces, which will be stored as multiple files. 
-	// These file paths should be merged and transmitted in strings. 
+	// A frame of pictures may contain multiple faces, which will be stored as multiple files.
+	// These file paths should be merged and transmitted in strings.
 	// Now each picture only transmitted a face's path for testing
 
-	// 
-	output := &Output{Serial: filename}//should be serial of the record in the database
+	//
+	output := &Output{Serial: filename} //should be serial of the record in the database
 	err = ctx.SetOutputObject(output)
 	if err != nil {
 		return true, err
@@ -176,7 +173,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	return true, nil
 }
-
 
 func checkErr(err error) {
 	if err != nil {
