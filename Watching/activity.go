@@ -1,6 +1,8 @@
 package sample
 
 import (
+	"log"
+
 	"github.com/project-flogo/core/activity"
 	//	"github.com/project-flogo/core/data/metadata"
 
@@ -116,14 +118,16 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 	fmt.Println(img.Size())
 
-	// testImagePristin := "tmp.jpg"
-	// gocv.IMWrite(testImagePristin, img)
+	testImagePristin := "tmp.jpg"
+	gocv.IMWrite(testImagePristin, img)
 
 	// Recognize faces on that image.
-	// faces, err := rec.RecognizeFile(testImagePristin)
-	// if err != nil {
-	// 	log.Fatalf("Can't recognize: %v", err)
-	// }
+	faces, err := rec.RecognizeFile(testImagePristin)
+	if err != nil {
+		log.Fatalf("Can't recognize: %v", err)
+	}
+
+	fmt.Printf("\n %c[%d;%d;%dm# of faces: %d%c[0m\n", 0x1B, 0, 0, 33, len(faces), 0x1B)
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
 	// save := false
