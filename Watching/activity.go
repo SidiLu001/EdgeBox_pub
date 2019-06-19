@@ -17,7 +17,7 @@ import (
 // const dataDir = "testdata"
 
 // var rec, _ = face.NewRecognizer("testdata")
-var window = gocv.NewWindow("Flogo")
+var window = gocv.NewWindow("EdgeWare")
 var img gocv.Mat
 var webcam, _ = gocv.OpenVideoCapture("the_car_lab.mp4")
 // var boxcolor color.RGBA
