@@ -80,7 +80,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		rectString := strings.Replace(faceArr[faceIndex], "(", "", -1)
 		rectString = strings.Replace(rectString, ")", "", -1)
 		rectString = strings.Replace(rectString, "-", ",", -1)
-		rectArr := strings.Split(receiveString, ",")
+		rectArr := strings.Split(rectString, ",")
 		fmt.Println("***************************************************")
 		fmt.Println(rectArr)
 
