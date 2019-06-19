@@ -74,6 +74,17 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	receiveString := input.Serial
 	faceArr := strings.Split(receiveString, ";")
 	imgName := faceArr[0]
+
+	// ***************************************
+	for faceIndex := 1; faceIndex < len(faceArr); faceIndex++ {
+		rectString := strings.Replace(faceArr[faceIndex], "(", "", -1)
+		rectString = strings.Replace(rectString, ")", "", -1)
+		rectString = strings.Replace(rectString, "-", ",", -1)
+		rectArr := strings.Split(receiveString, ",")
+		fmt.Println(rectArr)
+
+	}
+
 	imageFile, err := os.Open(imgName)
 	if err != nil {
 		log.Fatal(err)
