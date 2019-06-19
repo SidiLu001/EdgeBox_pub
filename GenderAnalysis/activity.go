@@ -82,8 +82,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			rectString = strings.Replace(rectString, ")", "", -1)
 			rectString = strings.Replace(rectString, "-", ",", -1)
 			rectArr := strings.Split(rectString, ",")
-			fmt.Println("***************************************************")
-			fmt.Println(rectArr)
+			// fmt.Println("***************************************************")
+			// fmt.Println(rectArr)
 			left, err = strconv.Atoi(rectArr[0])
 			if err != nil {
 				return true, err
@@ -108,8 +108,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			}
 			rect := image.Rect(left, top, right, bottom)
 			imgFace := img.Region(rect)
-			gocv.IMWrite("tmpAge.jpg", imgFace)
-			imgName := "tmpAge.jpg"
+			gocv.IMWrite("tmpGender.jpg", imgFace)
+			imgName := "tmpGender.jpg"
 
 			imageFile, err := os.Open(imgName)
 			if err != nil {
