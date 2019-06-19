@@ -130,34 +130,35 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	fmt.Printf("\n %c[%d;%d;%dm# of faces: %d%c[0m\n", 0x1B, 0, 0, 33, len(faces), 0x1B)
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
 
-	// save := false
-	// if save is true, indicating that the face is detected
-
-	// for _, f := range faces {
-	// 	// fmt.Println(f.Rectangle)
-	// 	mRect := f.Rectangle
-	// 	mRect.Min.X -= 20
-	// 	mRect.Min.Y -= 60
-	// 	mRect.Max.X += 20
-	// 	mRect.Max.Y += 20
-	// 	fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
-	// 	// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
-	// 	// // save = true
-	// 	// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
-	// 	// imgFace := img.Region(rect)
-
-	// // 	frameIndex++
-	// // 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-	// // 	gocv.IMWrite(filename, imgFace)
-	// }
-	// *************************
+	frameIndex++
+	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
 
 	window.IMShow(img)
 	window.WaitKey(1)
 
-	frameIndex++
-	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-	gocv.IMWrite(filename, img)
+	save := false
+	// if save is true, indicating that the face is detected
+
+	sendString := filename
+	for _, f := range faces {
+		mRect := f.Rectangle
+		fmt.Println(mRect)
+		// 	mRect.Min.X -= 20
+		// 	mRect.Min.Y -= 60
+		// 	mRect.Max.X += 20
+		// 	mRect.Max.Y += 20
+		// 	fmt.Println(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+		// 	// gocv.Rectangle(&img, mRect, color.RGBA{0, 255, 0, 0}, 2)
+		save = true
+		// 	// rect := image.Rect(mRect.Min.X, mRect.Min.Y, mRect.Max.X, mRect.Max.Y)
+		// 	// imgFace := img.Region(rect)
+
+		// // 	frameIndex++
+		// // 	filename = "/home/yyt/flogo/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+		// // 	gocv.IMWrite(filename, imgFace)
+		sendString += ";" + mRect.String()
+	}
+	// *************************
 
 	// if !save {
 	// 	return false, nil
@@ -170,10 +171,13 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// Now each picture only transmitted a face's path for testing
 
 	//
-	output := &Output{Serial: filename} //should be serial of the record in the database
-	err = ctx.SetOutputObject(output)
-	if err != nil {
-		return true, err
+	if save {
+		gocv.IMWrite(filename, img)
+		output := &Output{Serial: sendString} //should be serial of the record in the database
+		err = ctx.SetOutputObject(output)
+		if err != nil {
+			return true, err
+		}
 	}
 
 	return true, nil

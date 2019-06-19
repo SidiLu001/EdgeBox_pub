@@ -16,6 +16,7 @@ import (
 
 	"image"
 	"image/color"
+	"strings"
 
 	"gocv.io/x/gocv"
 )
@@ -70,7 +71,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	// *************************
 	// imgName := "tmpAge.jpg"
-	imgName := input.Serial
+	receiveString := input.Serial
+	faceArr := strings.Split(receiveString, ";")
+	imgName := faceArr[0]
 	imageFile, err := os.Open(imgName)
 	if err != nil {
 		log.Fatal(err)
