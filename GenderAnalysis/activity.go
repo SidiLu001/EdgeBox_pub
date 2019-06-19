@@ -1,6 +1,8 @@
 package sample
 
 import (
+	"strconv"
+
 	"github.com/project-flogo/core/activity"
 	//	"github.com/project-flogo/core/data/metadata"
 
@@ -28,6 +30,7 @@ var gender string
 var window = gocv.NewWindow("Gender")
 var textColor = color.RGBA{0, 255, 0, 0}
 var pt = image.Pt(20, 20)
+var left, top, right, bottom int
 
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
@@ -69,55 +72,96 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	// imgName := input.Serial
 	receiveString := input.Serial
 	faceArr := strings.Split(receiveString, ";")
-	imgName := faceArr[0]
+	framePath := faceArr[0]
 
-	imageFile, err := os.Open(imgName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	var imgBuffer bytes.Buffer
-	io.Copy(&imgBuffer, imageFile)
-	imgtf, err := readImage(&imgBuffer, "jpg")
-	if err != nil {
-		log.Fatal("error making tensor: ", err)
-	}
-
-	result, err := model.Session.Run(
-		map[tf.Output]*tf.Tensor{
-			model.Graph.Operation("input_1").Output(0): imgtf,
-		},
-		[]tf.Output{
-			model.Graph.Operation("dense_2/Softmax").Output(0),
-		},
-		nil,
-	)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if preds, ok := result[0].Value().([][]float32); ok {
-		// fmt.Println(preds)
-		if preds[0][0] > preds[0][1] {
-			gender = "female"
-			// fmt.Println("female")
-		} else {
-			// fmt.Println("male")
-			gender = "male"
+	// ***************************************
+	for faceIndex := 1; faceIndex < len(faceArr); faceIndex++ {
+		img := gocv.IMRead(framePath, gocv.IMReadColor)
+		rectString := strings.Replace(faceArr[faceIndex], "(", "", -1)
+		rectString = strings.Replace(rectString, ")", "", -1)
+		rectString = strings.Replace(rectString, "-", ",", -1)
+		rectArr := strings.Split(rectString, ",")
+		fmt.Println("***************************************************")
+		fmt.Println(rectArr)
+		left, err = strconv.Atoi(rectArr[0])
+		if err != nil {
+			return true, err
 		}
-		fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 34, gender, 0x1B)
-		imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
-		gocv.PutText(&imgFace, gender, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
-		window.IMShow(imgFace)
-		window.WaitKey(1)
+		top, err = strconv.Atoi(rectArr[1])
+		if err != nil {
+			return true, err
+		}
+		right, err = strconv.Atoi(rectArr[2])
+		if err != nil {
+			return true, err
+		}
+		bottom, err = strconv.Atoi(rectArr[3])
+		if err != nil {
+			return true, err
+		}
+		if right > 1280 {
+			right = 1280
+		}
+		if bottom > 720 {
+			bottom = 720
+		}
+		rect := image.Rect(left, top, right, bottom)
+		imgFace := img.Region(rect)
+		gocv.IMWrite("tmpAge.jpg", imgFace)
+		imgName := "tmpAge.jpg"
+
+		imageFile, err := os.Open(imgName)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var imgBuffer bytes.Buffer
+		io.Copy(&imgBuffer, imageFile)
+		imgtf, err := readImage(&imgBuffer, "jpg")
+		if err != nil {
+			log.Fatal("error making tensor: ", err)
+		}
+
+		result, err := model.Session.Run(
+			map[tf.Output]*tf.Tensor{
+				model.Graph.Operation("input_1").Output(0): imgtf,
+			},
+			[]tf.Output{
+				model.Graph.Operation("dense_2/Softmax").Output(0),
+			},
+			nil,
+		)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if preds, ok := result[0].Value().([][]float32); ok {
+			// fmt.Println(preds)
+			if preds[0][0] > preds[0][1] {
+				gender = "female"
+				// fmt.Println("female")
+			} else {
+				// fmt.Println("male")
+				gender = "male"
+			}
+			fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 34, gender, 0x1B)
+			imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
+			gocv.PutText(&imgFace, gender, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
+			window.IMShow(imgFace)
+			window.WaitKey(1)
+		}
+
 	}
 
 	// *******************************
+	// fmt.Printf("Input serial: %s\n", input.Serial)
 	fmt.Printf("\n %c[%d;%d;%dmInput serial: %s%c[0m\n", 0x1B, 0, 0, 31, input.Serial, 0x1B)
 
 	ctx.Logger().Debugf("Input serial: %s", input.Serial)
+	// 	ctx.Logger().Debugf("Age: %s", age)
 
 	return true, nil
+
 }
 
 // add by Yongtao
