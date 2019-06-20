@@ -39,7 +39,7 @@ func init() {
 	// add by Yongtao
 	ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
 	var err error
-	model, err = tf.LoadSavedModel("forGoserve_age", []string{"serve"}, nil)
+	model, err = tf.LoadSavedModel("resource/ageModel", []string{"serve"}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,8 +117,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 			rect := image.Rect(left, top, right, bottom)
 			imgFace := img.Region(rect)
-			gocv.IMWrite("tmpAge.jpg", imgFace)
-			imgName := "tmpAge.jpg"
+			gocv.IMWrite("resource/temp/tmpAge.jpg", imgFace)
+			imgName := "resource/temp/tmpAge.jpg"
 
 			imageFile, err := os.Open(imgName)
 			if err != nil {

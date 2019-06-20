@@ -35,7 +35,7 @@ var left, top, right, bottom int
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	var err error
-	model, err = tf.LoadSavedModel("forGoserve_gender_utk", []string{"serve"}, nil)
+	model, err = tf.LoadSavedModel("resource/genderModel", []string{"serve"}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -112,8 +112,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			}
 			rect := image.Rect(left, top, right, bottom)
 			imgFace := img.Region(rect)
-			gocv.IMWrite("tmpGender.jpg", imgFace)
-			imgName := "tmpGender.jpg"
+			gocv.IMWrite("resource/temp/tmpGender.jpg", imgFace)
+			imgName := "resource/temp/tmpGender.jpg"
 
 			imageFile, err := os.Open(imgName)
 			if err != nil {
