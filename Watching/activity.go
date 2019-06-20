@@ -112,19 +112,17 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	// *************************************
 	// add by Yongtao
-	if ok := webcam.Read(&img); !ok {
-		fmt.Printf("Device closed: %v\n", deviceID)
-		return
-	}
-	fmt.Println(img.Size())
-	frameIndex++
-	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+	for fid := 0; fid < 30; fid++ {
+		if ok := webcam.Read(&img); !ok {
+			fmt.Printf("Device closed: %v\n", deviceID)
+			return
+		}
+		fmt.Println(img.Size())
+		frameIndex++
+		filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
 
-	window.IMShow(img)
-	window.WaitKey(1)
-
-	if frameIndex%30 == 0 {
-		return true, nil
+		window.IMShow(img)
+		window.WaitKey(1)
 	}
 
 	testImagePristin := "resource/temp/tmp.jpg"
