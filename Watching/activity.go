@@ -117,6 +117,15 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		return
 	}
 	fmt.Println(img.Size())
+	frameIndex++
+	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
+
+	window.IMShow(img)
+	window.WaitKey(1)
+
+	if frameIndex%30 == 0 {
+		return true, nil
+	}
 
 	testImagePristin := "resource/temp/tmp.jpg"
 	gocv.IMWrite(testImagePristin, img)
@@ -129,12 +138,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	fmt.Printf("\n %c[%d;%d;%dm# of faces: %d%c[0m\n", 0x1B, 0, 0, 33, len(faces), 0x1B)
 	// imgFace := gocv.IMRead(testImagePristin, gocv.IMReadColor)
-
-	frameIndex++
-	filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
-
-	window.IMShow(img)
-	window.WaitKey(1)
 
 	save := false
 	// if save is true, indicating that the face is detected
