@@ -118,7 +118,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 	fmt.Println(img.Size())
 
-	testImagePristin := "tmp.jpg"
+	testImagePristin := "resource/temp/tmp.jpg"
 	gocv.IMWrite(testImagePristin, img)
 
 	// Recognize faces on that image.
