@@ -117,12 +117,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			fmt.Printf("Device closed: %v\n", deviceID)
 			return
 		}
-		fmt.Println(img.Size())
+		// fmt.Println(img.Size())
 		frameIndex++
 		filename = imgDir + "/flogo" + strconv.Itoa(frameIndex) + ".jpg"
 
 		window.IMShow(img)
-		window.WaitKey(1)
+		window.WaitKey(33)
 	}
 
 	testImagePristin := "resource/temp/tmp.jpg"
