@@ -25,7 +25,7 @@ import (
 
 var model *tf.SavedModel
 var activityMd = activity.ToMetadata(&Input{})
-var ageStage [5]string
+var ageStage [3]string
 var maxValueIndex int
 var age string
 var window = gocv.NewWindow("Age")
@@ -37,9 +37,10 @@ func init() {
 	_ = activity.Register(&Activity{})
 	//activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	// add by Yongtao
-	ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
+	// ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
+	ageStage = [...]string{"0-13", "25-40", "60-"}
 	var err error
-	model, err = tf.LoadSavedModel("resource/ageModel", []string{"serve"}, nil)
+	model, err = tf.LoadSavedModel("resource/ageModel2", []string{"serve"}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
