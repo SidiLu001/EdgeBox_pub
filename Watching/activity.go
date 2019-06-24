@@ -23,7 +23,8 @@ import (
 // var rec, _ = face.NewRecognizer("testdata")
 var window = gocv.NewWindow("EdgeWare")
 var img gocv.Mat
-var webcam, _ = gocv.OpenVideoCapture("resource/the_car_lab.mp4")
+// var webcam, _ = gocv.OpenVideoCapture("resource/the_car_lab.mp4")
+var webcam, _ = gocv.OpenVideoCapture(0)
 var rec, _ = face.NewRecognizer("resource/faceModel")
 
 // var boxcolor color.RGBA
