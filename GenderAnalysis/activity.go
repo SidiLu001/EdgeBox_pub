@@ -104,6 +104,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			top -= 60
 			right += 20
 			bottom += 20
+			if left < 0 {
+				left = 0
+			}
+			if top < 0 {
+				top = 0
+			}
 			if right > 640 {
 				right = 640
 			}
