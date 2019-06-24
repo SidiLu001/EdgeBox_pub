@@ -109,11 +109,11 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			top -= 60
 			right += 20
 			bottom += 20
-			if right > 1280 {
-				right = 1280
+			if right > 480 {
+				right = 480
 			}
-			if bottom > 720 {
-				bottom = 720
+			if bottom > 640 {
+				bottom = 640
 			}
 
 			rect := image.Rect(left, top, right, bottom)
