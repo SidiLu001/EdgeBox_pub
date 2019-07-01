@@ -35,7 +35,8 @@ var left, top, right, bottom int
 func init() {
 	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	var err error
-	model, err = tf.LoadSavedModel("resource/genderModel", []string{"serve"}, nil)
+// 	model, err = tf.LoadSavedModel("resource/genderModel", []string{"serve"}, nil)
+	model, err = tf.LoadSavedModel("resource/forGoNew", []string{"serve"}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -132,12 +133,26 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 				log.Fatal("error making tensor: ", err)
 			}
 
+			
+// 			result, err := model.Session.Run(
+// 				map[tf.Output]*tf.Tensor{
+// 					model.Graph.Operation("input_1").Output(0): imgtf,
+// 				},
+// 				[]tf.Output{
+// 					model.Graph.Operation("dense_2/Softmax").Output(0),
+// 				},
+// 				nil,
+// 			)
+			
+			plTensor, _ := tf.NewTensor(false)
 			result, err := model.Session.Run(
 				map[tf.Output]*tf.Tensor{
-					model.Graph.Operation("input_1").Output(0): imgtf,
+					model.Graph.Operation("input_image").Output(0): imgtf,
+					model.Graph.Operation("Placeholder").Output(0): plTensor,
 				},
 				[]tf.Output{
-					model.Graph.Operation("dense_2/Softmax").Output(0),
+					model.Graph.Operation("Softmax").Output(0),
+					// model.Graph.Operation("Softmax_1").Output(0),
 				},
 				nil,
 			)
