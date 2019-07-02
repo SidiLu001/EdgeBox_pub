@@ -25,9 +25,10 @@ import (
 
 var model *tf.SavedModel
 var activityMd = activity.ToMetadata(&Input{})
-var ageStage [3]string
+// var ageStage [3]string
 var maxValueIndex int
-var age string
+// var age string
+var age int
 var window = gocv.NewWindow("Age")
 var textColor = color.RGBA{0, 255, 0, 0}
 var pt = image.Pt(20, 20)
@@ -38,7 +39,7 @@ func init() {
 	//activity.Register(&Activity{}, New) to create instances using factory method 'New'
 	// add by Yongtao
 	// ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
-	ageStage = [...]string{"0-13", "25-40", "60-"}
+// 	ageStage = [...]string{"0-13", "25-40", "60-"}
 	var err error
 // 	model, err = tf.LoadSavedModel("resource/ageModel2", []string{"serve"}, nil)
 	model, err = tf.LoadSavedModel("resource/forGoNew", []string{"serve"}, nil)
