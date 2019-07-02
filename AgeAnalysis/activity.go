@@ -177,7 +177,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 				fmt.Printf("\n %c[%d;%d;%dm%d%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 
 				imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
-				gocv.PutText(&imgFace, age, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
+				gocv.PutText(&imgFace, strconv.Itoa(age), pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
 				window.IMShow(imgFace)
 				window.WaitKey(1)
 			}
