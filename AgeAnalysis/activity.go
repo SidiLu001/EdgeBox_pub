@@ -173,7 +173,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 // 				age = ageStage[maxValueIndex]
 				age = maxValueIndex
 				// fmt.Println("Age: ", age)
-				fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
+				fmt.Printf("\n %c[%d;%d;%dm%d%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 
 				imgFace := gocv.IMRead(imgName, gocv.IMReadColor)
 				gocv.PutText(&imgFace, age, pt, gocv.FontHersheyPlain, 1.2, textColor, 2)
