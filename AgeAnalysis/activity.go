@@ -244,7 +244,7 @@ func transformGraph(imageFormat string) (graph *tf.Graph, input,
 	output tf.Output, err error) {
 	const (
 		// H, W  = 224, 224
-		H, W  = 227, 227
+		H, W  = 160, 160
 		Mean  = float32(117)
 		Scale = float32(1)
 	)
