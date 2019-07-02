@@ -40,7 +40,8 @@ func init() {
 	// ageStage = [...]string{"0-6", "8-20", "25-32", "38-53", "60-"}
 	ageStage = [...]string{"0-13", "25-40", "60-"}
 	var err error
-	model, err = tf.LoadSavedModel("resource/ageModel2", []string{"serve"}, nil)
+// 	model, err = tf.LoadSavedModel("resource/ageModel2", []string{"serve"}, nil)
+	model, err = tf.LoadSavedModel("resource/forGoNew", []string{"serve"}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -138,12 +139,25 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 				log.Fatal("error making tensor: ", err)
 			}
 
+// 			result, err := model.Session.Run(
+// 				map[tf.Output]*tf.Tensor{
+// 					model.Graph.Operation("input_1").Output(0): imgtf,
+// 				},
+// 				[]tf.Output{
+// 					model.Graph.Operation("dense_2/Softmax").Output(0),
+// 				},
+// 				nil,
+// 			)
+			
+			plTensor, _ := tf.NewTensor(false)
 			result, err := model.Session.Run(
 				map[tf.Output]*tf.Tensor{
-					model.Graph.Operation("input_1").Output(0): imgtf,
+					model.Graph.Operation("input_image").Output(0): imgtf,
+					model.Graph.Operation("Placeholder").Output(0): plTensor,
 				},
 				[]tf.Output{
-					model.Graph.Operation("dense_2/Softmax").Output(0),
+// 					model.Graph.Operation("Softmax").Output(0),
+					model.Graph.Operation("Softmax_1").Output(0),
 				},
 				nil,
 			)
@@ -156,7 +170,8 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 				// 		fmt.Println(preds[0])
 				// 		fmt.Println(reflect.TypeOf(preds[0]))
 				maxValueIndex = indexOfMax(preds[0])
-				age = ageStage[maxValueIndex]
+// 				age = ageStage[maxValueIndex]
+				age = maxValueIndex
 				// fmt.Println("Age: ", age)
 				fmt.Printf("\n %c[%d;%d;%dm%s%c[0m\n", 0x1B, 0, 0, 32, age, 0x1B)
 
